@@ -58,11 +58,11 @@ class Model():
             data = tf.nn.embedding_lookup(embed, self.X)
 
         with tf.variable_scope('rnn'):
-            cells = [tf.nn.rnn_cell.DropoutWrapper(tf.nn.rnn_cell.BasicLSTMCell(self.dim_embedding),qutput_keep_prob=self.keep_prob) for i in range(self.rnn_layers)]
+            cells = [tf.nn.rnn_cell.DropoutWrapper(tf.nn.rnn_cell.BasicLSTMCell(self.dim_embedding),output_keep_prob=self.keep_prob) for i in range(self.rnn_layers)]
 
-            rnn_mutli = tf.nn.rnn_cell.MultiRNNCell(cells,state_is_tuple=True)
+            rnn_multi = tf.nn.rnn_cell.MultiRNNCell(cells,state_is_tuple=True)
 
-            self.state_tensor = rnn_mutli.zero_state(self.batch_size,tf.float32)
+            self.state_tensor = rnn_multi.zero_state(self.batch_size,tf.float32)
 
             outputs_tensor,self.outputs_state_tensor = tf.nn.dynamic_rnn(rnn_multi,data,initial_state = self.state_tensor,dtype=tf.float32)
 
@@ -70,7 +70,8 @@ class Model():
             ##################
             # Your Code here
             ##################
-
+        
+        seq_output = tf.concat(outputs_tensor,1)
         # flatten it
         seq_output_final = tf.reshape(seq_output, [-1, self.dim_embedding])
 
@@ -89,16 +90,18 @@ class Model():
 
         self.predictions = tf.nn.softmax(logits, name='predictions')
 
-        loss = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=tf.reshape(self.Y, [-1])
-        mean, var = tf.nn.moments(logits, -1)
+        y_one_hot = tf.one_hot(self.Y,self.num_words)
+        y_reshaped = tf.reshape(y_one_hot,logits.get_shape())
+        loss = tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=y_reshaped)
+        # mean, var = tf.nn.moments(logits, -1)
         self.loss = tf.reduce_mean(loss)
         tf.summary.scalar('logits_loss', self.loss)
 
-        var_loss = tf.divide(10.0, 1.0+tf.reduce_mean(var))
-        tf.summary.scalar('var_loss', var_loss)
+        # var_loss = tf.divide(10.0, 1.0+tf.reduce_mean(var))
+        # tf.summary.scalar('var_loss', var_loss)
         # 把标准差作为loss添加到最终的loss里面，避免网络每次输出的语句都是机械的重复
-        self.loss = self.loss + var_loss
-        tf.summary.scalar('total_loss', self.loss)
+        # self.loss = self.loss + var_loss
+        # tf.summary.scalar('total_loss', self.loss)
 
         # gradient clip
         tvars = tf.trainable_variables()

@@ -58,9 +58,9 @@ with tf.Session() as sess:
             sample_len = dl.shape[1]
             dl_index = utils.index_data(dl,dictionary)
 
-            d_index = dl_index[:,sample_len-1]
+            d_index = dl_index[:,:sample_len-1]
             l_index = dl_index[:,1:]
-            feed_dict = {model.x:d_index,model.Y:l_index,model.state_tensor:state,model.keep_prob:0.5}
+            feed_dict = {model.X:d_index,model.Y:l_index,model.state_tensor:state,model.keep_prob:0.5}
 
             ##################
             # Your Code here

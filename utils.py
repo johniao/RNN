@@ -28,7 +28,7 @@ def index_data(sentences, dictionary):
 
 
 def get_train_data(vocabulary, batch_size, num_steps):
-    sample_len = batch_size * (vocabulary//batch_size)
+    sample_len = batch_size * (len(vocabulary)//batch_size)
     vo_array = np.array(vocabulary[:sample_len])
     vo_array = vo_array.reshape([batch_size,-1])
 
