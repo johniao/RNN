@@ -51,7 +51,7 @@ with tf.Session() as sess:
     logging.debug('Initialized')
 
     try:
-        checkpoint_path = tf.train.latest_checkpoint(FLAGS.output_dir)
+        checkpoint_path = tf.train.latest_checkpoint(FLAGS.checkpoint_dir)
         saver.restore(sess, checkpoint_path)
         logging.debug('restore from [{0}]'.format(checkpoint_path))
 

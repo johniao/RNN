@@ -15,6 +15,10 @@ def parse_args(check=True):
     parser.add_argument('--output_dir', type=str, default='./output',
                         help='path to save log and checkpoint.')
 
+    parser.add_argument('--checkpoint_dir', type=str, default='https://www.tinymind.com/executions/0f3asfpt/output',
+                        help='path to save log and checkpoint.')
+
+
     parser.add_argument('--text', type=str, default='QuanSongCi.txt',
                         help='path to QuanSongCi.txt')
 
