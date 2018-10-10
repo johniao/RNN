@@ -22,12 +22,12 @@ logging.basicConfig(
 vocabulary = read_data(FLAGS.text)
 print('Data size before', len(vocabulary))
 #过滤标点符号
-pt = '＂＃＄％＆＇（）＊＋，－／：；＜＝＞＠［＼］＾＿｀｛｜｝～｟｠｢｣､　、〃〈〉《》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟〰〾〿–—‘’‛“”„‟…‧﹏﹑﹔·！？｡。'
-for k in vocabulary:
-    if k in pt:
-        vocabulary.remove(k)
-    if k == '\n':
-        vocabulary.remove(k)
+# pt = '＂＃＄％＆＇（）＊＋，－／：；＜＝＞＠［＼］＾＿｀｛｜｝～｟｠｢｣､　、〃〈〉《》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟〰〾〿–—‘’‛“”„‟…‧﹏﹑﹔·！？｡。'
+# for k in vocabulary:
+#     if k in pt:
+#         vocabulary.remove(k)
+#     if k == '\n':
+#         vocabulary.remove(k)
 print('Data size after', len(vocabulary))
 
 
